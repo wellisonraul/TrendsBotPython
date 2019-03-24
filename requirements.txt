@@ -1,0 +1,8 @@
+google-api-python-client
+google-cloud-speech
+python-telegram-bot
+nltk
+emoji
+requests
+bs4
+
