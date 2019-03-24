@@ -11,9 +11,8 @@ from emoji import emojize
 from requests import post, get
 from bs4 import BeautifulSoup
 
-" Insira as váriaveis do Google Cloud e do Bot"
-bot_key = "BOT API KEY"
-environ["GOOGLE_APPLICATION_CREDENTIALS"] = "API_KEY_GOOGLE_CLOUD_SPEECH"
+# Váriavel de ambiente from git
+bot_key = environ['BOT_KEY']
 client = speech.SpeechClient()
 
 
@@ -148,17 +147,20 @@ def montar_messagem_usuario(retorno_twitter, jornal_twitter, lista_g1):
 
     retorno_usuario_g1 = ""
     retorno_usuario_bbc = ""
+    retorno_usuario_diario = ""
     if jornal_twitter[0]:
         retorno_usuario_g1 = "\n\nNo Twitter do G1 você pode encontrar: " + str(jornal_twitter[0])
     if jornal_twitter[1]:
         retorno_usuario_bbc = "\n\nNo Twitter da BBC você pode encontrar: " + str(jornal_twitter[1])
+    if jornal_twitter[2]:
+        retorno_usuario_diario = "\n\nNo Twitter do Diário você pode encontrar: " + str(jornal_twitter[2])
 
-    if retorno_usuario_g1 or retorno_usuario_bbc:
+    if retorno_usuario_g1 or retorno_usuario_bbc or retorno_usuario_diario:
         retorno_twiter_jornal = "\n\nVamos procurar informações recentes nos Twitters de grandes portais:" \
-                                + retorno_usuario_g1 + retorno_usuario_bbc
+                                + retorno_usuario_g1 + retorno_usuario_bbc + retorno_usuario_diario
     else:
-        retorno_twiter_jornal = "\n\nO twitter do G1 e da BBC news também não apresentam recentemente" \
-                                " informações sobre este fato!"
+        retorno_twiter_jornal = "\n\nO twitter do G1, BBC news e do Diário do Pernambcuo também não apresentam " \
+                                "recentemente informações sobre este fato!"
 
     retorno_usuario_g1_site = ""
     for site in lista_g1:
@@ -262,7 +264,13 @@ def pegar_twitter_jornal(texto_normalizado, jornais):
             bbcbrasil = lista_resultados[index][1]
             break
 
-    lista = [g1, bbcbrasil]
+    diario = []
+    for index in range(0, len(lista_resultados)):
+        if lista_resultados[index][0] == 'DiarioPE':
+            diario = lista_resultados[index][1]
+            break
+
+    lista = [g1, bbcbrasil, diario]
     return lista
 
 
@@ -322,7 +330,7 @@ def twitter(bot, update):
 
         texto_normalizado = normalizar(messagem)
         retorno_twitter = requisitar_twitter(texto_normalizado)
-        jornal_twitter = pegar_twitter_jornal(texto_normalizado, ['g1', 'bbc'])
+        jornal_twitter = pegar_twitter_jornal(texto_normalizado, ['g1', 'bbc', 'DiarioPE'])
         lista_g1 = pegar_site_jornal(texto_normalizado)
         update.message.reply_text(
             emojize(montar_messagem_usuario(retorno_twitter, jornal_twitter, lista_g1), use_aliases=True))
@@ -360,7 +368,7 @@ def voz(bot, update):
         texto_speech = texto_speech.lower()
         texto_normalizado = normalizar(texto_speech)
         retorno_twitter = requisitar_twitter(texto_normalizado)
-        jornal_twitter = pegar_twitter_jornal(texto_normalizado, ['g1', 'bbc'])
+        jornal_twitter = pegar_twitter_jornal(texto_normalizado, ['g1', 'bbc', 'DiarioPE'])
         lista_g1 = pegar_site_jornal(texto_normalizado)
         update.message.reply_text(
             emojize(montar_messagem_usuario(retorno_twitter, jornal_twitter, lista_g1), use_aliases=True))
