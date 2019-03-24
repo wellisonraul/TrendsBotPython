@@ -1,0 +1,2 @@
+# TrendsBotPython
+Ainda vou criar
