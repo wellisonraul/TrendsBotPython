@@ -1,7 +1,6 @@
 # Introducion
 
-This is a Telegram bot capable of processing audio and text inputs to request a simple REST API 
-and determine matches between entries and trending topics on Twitter. 
+TrendsBot consists of a virtual assistant (bot) that helps users to identify news of doubtful and / or false origin in groups of the Telegram. This bot is able to search and search terms using Twitter to assist users in Telegram groups for Fake News detection. This bot is also able of processing audio and text inputs to request a simple REST API and determine matches between entries and trending topics on Twitter. 
 
 To process an audio it is necessary to contain the word Twitter at the beginning. 
 To have a text processed you need to use the /twitter command. 
@@ -17,10 +16,13 @@ You can install sdpos using::
     $ python3 trends_bot.py
     
 Video with TrendsBot installation guide available on Youtube::
+
     $ https://youtu.be/jEgaV5YqABk
-    
+   
 # How to use this software?
+
 Video with TrendsBot usage guide available on Youtube::
+
     $ https://youtu.be/HYEYfvtTbzQ
 
 # Dependencies
